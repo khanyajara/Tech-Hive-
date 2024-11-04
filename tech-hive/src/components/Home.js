@@ -1,14 +1,19 @@
+// src/components/HomePage.js
+
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import AddToCart from './AddToCart';
 import logo from '../components/removed-background.png'; 
 import '../styles/home.css';
 
-const API_URL = 'http://localhost:5000/api/getProducts'; 
+const API_URL = 'http://localhost:5000/api/getProducts';
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -52,7 +57,7 @@ const HomePage = () => {
                     </ul>
                 </nav>
                 <input type="text" placeholder="Search..." className="search-bar" />
-                <div className="cart-icon">🛒</div>
+                <Link to="/cart" className="cart-icon">🛒</Link>
             </header>
             <div className="hero-section">
                 <h1>Welcome to Tech-Hive Marketplace</h1>
@@ -63,12 +68,12 @@ const HomePage = () => {
                 <h2>Featured Products</h2>
                 <div className="product-grid">
                     {featuredProducts.map((product) => (
-                        <div key={product.id} className="product-card">
+                        <div key={product.id} className="product-card" onClick={() => navigate(`/product/${product.id}`)}>
                             <img src={product.Image} alt={product.name} className="product-image" />
                             <div className="product-info">
                                 <h3 className="product-name">{product.name}</h3>
                                 <p className="product-price">${product.price}</p>
-                                <button className="add-to-cart">Add to Cart</button>
+                                <AddToCart product={product} />
                             </div>
                         </div>
                     ))}
@@ -80,12 +85,12 @@ const HomePage = () => {
                     <h2>{deviceType}</h2>
                     <div className="product-grid">
                         {categorizedProducts[deviceType].map((product) => (
-                            <div key={product.id} className="product-card">
+                            <div key={product.id} className="product-card" onClick={() => navigate(`/product/${product.id}`)}>
                                 <img src={product.Image} alt={product.name} className="product-image" />
                                 <div className="product-info">
                                     <h3 className="product-name">{product.name}</h3>
                                     <p className="product-price">${product.price}</p>
-                                    <button className="add-to-cart">Add to Cart</button>
+                                    <AddToCart product={product} />
                                 </div>
                             </div>
                         ))}
