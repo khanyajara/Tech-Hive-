@@ -1,0 +1,25 @@
+{
+  "name": "tech-hive",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Manage employee data using crud with firebase",
+  "scripts": {
+    "start": "concurrently \"npm run start-react\" \"npm run start-server\"",
+    "start-react": "cd ./tech-hive && npm run dev",
+    "start-server": "cd ./Backend/&& nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "concurrently": "^9.0.1",
+    "cors": "^2.8.5",
+    "nodemon": "^3.1.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-loader-spinner": "^6.1.6",
+    "react-router": "^6.27.0",
+    "react-router-dom": "^6.27.0"
+  }
+}
