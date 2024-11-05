@@ -1,11 +1,10 @@
-// src/components/HomePage.js
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import AddToCart from './AddToCart';
 import logo from '../components/removed-background.png'; 
 import '../styles/home.css';
+
 
 const API_URL = 'http://localhost:5000/api/getProducts';
 
@@ -44,6 +43,11 @@ const HomePage = () => {
         return acc;
     }, {});
 
+
+    const Admin=()=>{
+        navigate('/LoginAdmin')
+    }
+
     return (
         <div className="home-container">
             <header className="header">
@@ -51,12 +55,16 @@ const HomePage = () => {
                 <nav className="navigation">
                     <ul>
                         <li>Home</li>
-                        <li>Shop</li>
+                        <li onClick={Admin} >Admin</li>
                         <li>About Us</li>
                         <li>Contact</li>
                     </ul>
                 </nav>
                 <input type="text" placeholder="Search..." className="search-bar" />
+                <br/>
+                <br/>
+                <br/>
+                <br/>
                 <Link to="/cart" className="cart-icon">🛒</Link>
             </header>
             <div className="hero-section">

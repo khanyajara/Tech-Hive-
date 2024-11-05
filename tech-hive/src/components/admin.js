@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import css from '../styles/admin.css'
+import css from '../styles/admin.css';
 
 const API_URL = 'http://localhost:5000/api';
 
@@ -13,7 +13,12 @@ const Admin = () => {
     const [image, setImage] = useState('');
     const [deviceType, setDeviceType] = useState('');
     const [updateId, setUpdateId] = useState(null);
-    
+    const [ hide,setHide]=useState(false);
+    const [hideProduct, setHideProduct]=useState(false)
+    const [showProduct, setShowProduct]=useState(true)
+    const [product,  setProduct] = useState({});
+
+
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -27,7 +32,7 @@ const Admin = () => {
         }
     };
 
-    const handleAddProduct = async (e) => {
+    const AddProduct = async (e) => {
         e.preventDefault();
         try {
             await axios.post(`${API_URL}/addProduct`, {
@@ -45,7 +50,7 @@ const Admin = () => {
         }
     };
 
-    const handleDeleteProduct = async (id) => {
+    const DeleteProduct = async (id) => {
         try {
             await axios.delete(`${API_URL}/deleteProduct/${id}`);
             fetchProducts();
@@ -54,19 +59,6 @@ const Admin = () => {
         }
     };
 
-    const handleUpdateProduct = async (id) => {
-        try {
-            await axios.put(`${API_URL}/updateProduct/${id}`, {
-                price,
-                Specs: specs,
-                quantity
-            });
-            fetchProducts();
-            resetForm();
-        } catch (error) {
-            console.error("Error updating product:", error);
-        }
-    };
 
     const resetForm = () => {
         setName('');
@@ -78,33 +70,46 @@ const Admin = () => {
         setUpdateId(null);
     };
 
+
+    const HideProduct = (id) => {
+        setHideProduct(id);
+        setShowProduct(false)
+
+    }
+
     return (
         <div className="admin-container">
-            <h1>Admin Panel</h1>
-            <form onSubmit={handleAddProduct}>
+            <div className="header">
+                <h1>Admin Panel</h1>
+                <button onClick={resetForm}>{updateId ? "Cancel Edit" : "Clear Form"}</button>
+            </div>
+            <form onSubmit={AddProduct} className="product-form">
                 <input type="text" placeholder="Product Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} required />
                 <input type="number" placeholder="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
                 <input type="text" placeholder="Specs" value={specs} onChange={(e) => setSpecs(e.target.value)} required />
                 <input type="text" placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} required />
                 <input type="text" placeholder="Device Type" value={deviceType} onChange={(e) => setDeviceType(e.target.value)} required />
-                <button type="submit">{updateId ? "Update Product" : "Add Product"}</button>
+                <button type="submit" className="submit-button">{updateId ? "Update Product" : "Add Product"}</button>
             </form>
             <h2>Product List</h2>
-            <ul>
+            <ul className="product-list">
                 {products.map((product) => (
-                    <li key={product.id}>
-                        {product.name} - ${product.price}
-                        <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-                        <button onClick={() => {
-                            setName(product.name);
-                            setPrice(product.price);
-                            setQuantity(product.quantity);
-                            setSpecs(product.Specs);
-                            setImage(product.Image);
-                            setDeviceType(product.deviceType);
-                            setUpdateId(product.id);
-                        }}>Edit</button>
+                    <li key={product.id} className="product-item">
+                        <span className="product-info">{product.name} - ${product.price}</span>
+                        <div className="product-actions">
+                            <button className="edit-button" onClick={() => {
+                                setName(product.name);
+                                setPrice(product.price);
+                                setQuantity(product.quantity);
+                                setSpecs(product.Specs);
+                                setImage(product.Image);
+                                setDeviceType(product.deviceType);
+                                setUpdateId(product.id);
+                            }}>Edit</button>
+                            <button className="delete-button" onClick={() => DeleteProduct(product.id)}>Delete</button>
+                            <button className='Hide-button' onClick={()=>HideProduct(product.id)}>Hide</button>
+                        </div>
                     </li>
                 ))}
             </ul>
