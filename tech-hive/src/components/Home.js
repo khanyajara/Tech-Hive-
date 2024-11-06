@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import AddToCart from './AddToCart';
+
 import logo from '../components/removed-background.png'; 
 import '../styles/home.css';
 
-
-const API_URL = 'http://localhost:5000/api/getProducts';
+const API_URL = 'https://the-hive-backend.onrender.com/api/getProducts';
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [cartItemCount, setCartItemCount] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,6 +30,10 @@ const HomePage = () => {
         fetchProducts();
     }, []);
 
+    const handleAddToCart = () => {
+        setCartItemCount(prevCount => prevCount + 1);
+    };
+
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
     if (products.length === 0) return <div className="error">No products available.</div>;
@@ -43,10 +48,13 @@ const HomePage = () => {
         return acc;
     }, {});
 
+    const Admin = () => {
+        navigate('/LoginAdmin');
+    };
 
-    const Admin=()=>{
-        navigate('/LoginAdmin')
-    }
+    const User = () => {
+        navigate('/user');
+    };
 
     return (
         <div className="home-container">
@@ -55,9 +63,9 @@ const HomePage = () => {
                 <nav className="navigation">
                     <ul>
                         <li>Home</li>
-                        <li onClick={Admin} >Admin</li>
+                        <li onClick={Admin}>Admin</li>
                         <li>About Us</li>
-                        <li>Contact</li>
+                        <li onClick={User}>Profile</li>
                     </ul>
                 </nav>
                 <input type="text" placeholder="Search..." className="search-bar" />
@@ -65,7 +73,10 @@ const HomePage = () => {
                 <br/>
                 <br/>
                 <br/>
-                <Link to="/cart" className="cart-icon">🛒</Link>
+                <Link to="/cart" className="cart-icon">
+                    🛒
+                    {cartItemCount > 0 && <span className="cart-count">{cartItemCount}</span>}
+                </Link>
             </header>
             <div className="hero-section">
                 <h1>Welcome to Tech-Hive Marketplace</h1>
@@ -81,7 +92,7 @@ const HomePage = () => {
                             <div className="product-info">
                                 <h3 className="product-name">{product.name}</h3>
                                 <p className="product-price">${product.price}</p>
-                                <AddToCart product={product} />
+                                <AddToCart product={product} onAddToCart={handleAddToCart} />
                             </div>
                         </div>
                     ))}
@@ -98,7 +109,7 @@ const HomePage = () => {
                                 <div className="product-info">
                                     <h3 className="product-name">{product.name}</h3>
                                     <p className="product-price">${product.price}</p>
-                                    <AddToCart product={product} />
+                                    <AddToCart product={product} onAddToCart={handleAddToCart} />
                                 </div>
                             </div>
                         ))}

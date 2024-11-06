@@ -1,0 +1,137 @@
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #797979;
+    border-radius: 12px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.user-Btns {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.user-Btns:hover {
+    background-color: #0056b3;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+.texts {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-profile {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.edit-profile input[type="text"] {
+    width: calc(100% - 20px);
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.fun-btns {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fun-btns:hover {
+    background-color: #5a6268;
+}
+
+img {
+    max-width: 150px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .user-Btns {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .edit-profile input[type="text"] {
+        width: calc(100% - 16px);
+    }
+
+    section {
+        padding: 0 15px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-Btns {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    button, .fun-btns {
+        padding: 8px 16px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

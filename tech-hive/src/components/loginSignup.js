@@ -5,7 +5,7 @@ import '../styles/auth.css';
 import { useNavigate } from 'react-router';
 import logo from '../components/removed-background.png';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://the-hive-backend.onrender.com/api';
 
 const LoginSignUp = () => {
     const [loginEmail, setLoginEmail] = useState('');
@@ -29,7 +29,8 @@ const LoginSignUp = () => {
                 email: loginEmail,
                 password: loginPassword,
             });
-            const { role } = response.data;
+            const { role, user } = response.data;
+            localStorage.setItem('user', JSON.stringify(user));
             if (!role) {
                 navigate('/home');
             } else if (role === 'admin') {
@@ -198,3 +199,4 @@ const LoginSignUp = () => {
 };
 
 export default LoginSignUp;
+

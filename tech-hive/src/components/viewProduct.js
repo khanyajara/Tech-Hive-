@@ -12,7 +12,7 @@ const ViewProduct = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/getProducts/${productId}`);
+                const response = await axios.get(`https://the-hive-backend.onrender.com/api/getProducts/${productId}`);
                 setProduct(response.data);
                 setLoading(false);
             } catch (err) {

@@ -7,8 +7,10 @@
 
 .cart-items {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
+    color: #ddd;
     margin-top: 20px;
 }
 
@@ -39,7 +41,7 @@
 }
 
 .cart-item-price {
-    color: #555;
+    color: #ffffff;
 }
 
 .remove-button {
@@ -60,6 +62,7 @@
     margin-top: 30px;
     font-size: 1.5em;
     font-weight: bold;
+    color: antiquewhite;
 }
 
 .empty-cart {

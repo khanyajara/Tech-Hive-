@@ -5,7 +5,7 @@ import '../styles/auth.css';
 import { useNavigate } from 'react-router';
 import logo from '../components/removed-background.png';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://the-hive-backend.onrender.com/api';
 
 const LoginAdmin = () => {
     const [loginEmail, setLoginEmail] = useState('');

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import css from '../styles/admin.css';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://the-hive-backend.onrender.com/api';
 
 const Admin = () => {
     const [products, setProducts] = useState([]);

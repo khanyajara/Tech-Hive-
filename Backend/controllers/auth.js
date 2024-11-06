@@ -50,6 +50,19 @@ const SignUp = async (req, res) => {
                 res.status(400).json({message: error.message})
             }
     }
+
+    const fetctUser= async  (req, res) =>{
+        const { id } = req.body;
+        try{
+            const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid)) 
+            res.json({ message: "User fetched successfully", user: userDoc.data() });
+        }
+        catch(error){
+            console.error(error)
+            res.status(400).json({message: error.message}) 
+        }
+    }
+
           
 
 
@@ -59,5 +72,6 @@ const SignUp = async (req, res) => {
 module.exports = {
     SignUp,
     Login,
-    resetPassword
+    resetPassword,
+    fetctUser
 };
