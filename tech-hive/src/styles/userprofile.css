@@ -102,7 +102,17 @@ img {
 }
 
 
-@media (max-width: 768px) {
+@media (min-width: 768px){
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #797979;
+        border-radius: 12px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
     .user-Btns {
         font-size: 0.9rem;
         padding: 8px 16px;
@@ -121,7 +131,26 @@ img {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 425px) {
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        background-color: #797979;
+        border-radius: 12px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
     .user-Btns {
         font-size: 0.8rem;
         padding: 6px 12px;

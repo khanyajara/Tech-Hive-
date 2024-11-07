@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import css from '../styles/userprofile.css'
+import css from '../styles/userprofile.css';
 
 const UserProfile = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const UserProfile = () => {
         phone: '',
         location: '',
         language: 'English',
-        theme: 'Light',
+        theme: 'light',
         notificationSettings: 'All',
         socialLinks: { twitter: '', linkedin: '' },
         firstName: '',
@@ -24,13 +24,19 @@ const UserProfile = () => {
         creationDate: '',
         lastLogin: '',
         twoFactorAuth: false,
-        privacySettings: 'Public'
+        privacySettings: 'Public',
+        devices: [],
+        loginAlerts: false,
+        adPreferences: false,
+        dataDownloadRequest: false,
+        thirdPartyApps: []
     });
     const [currentSection, setCurrentSection] = useState('basic-info');
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
-
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', storedTheme);
         if (storedUser) {
             setProfileInfo(storedUser);
             setLoading(false);
@@ -57,14 +63,20 @@ const UserProfile = () => {
         setProfileInfo(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleThemeChange = (theme) => {
+        setProfileInfo(prev => ({ ...prev, theme }));
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    };
+
     const handleSave = () => {
         localStorage.setItem('user', JSON.stringify(profileInfo));
         setIsEditing(false);
     };
 
     const track = () => {
-        navigate('/track')
-    }
+        navigate('/track');
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -118,26 +130,32 @@ const UserProfile = () => {
                     <h2>Preferences</h2>
                     <p className='texts'><strong>Language:</strong> {profileInfo.language}</p>
                     <p className='texts'><strong>Theme:</strong> {profileInfo.theme}</p>
-                    <p className='texts'><strong>Notifications:</strong> {profileInfo.notificationSettings}</p>
+                    <button onClick={() => handleThemeChange('light')}>Light Theme</button>
+                    <button onClick={() => handleThemeChange('dark')}>Dark Theme</button>
                 </section>
             )}
 
-            {currentSection === 'social-links' && (
-                <section className="social-links">
-                    <h2>Social Links</h2>
-                    <p><strong>Twitter:</strong> {profileInfo.socialLinks.twitter}</p>
-                    <p><strong>LinkedIn:</strong> {profileInfo.socialLinks.linkedin}</p>
-                </section>
-            )}
+{currentSection === 'social-links' && (
+    <section className="social-links">
+        <h2>Social Links</h2>
+        <p><strong>Twitter:</strong> {profileInfo.socialLinks?.twitter || 'Not provided'}</p>
+        <p><strong>LinkedIn:</strong> {profileInfo.socialLinks?.linkedin || 'Not provided'}</p>
+    </section>
+)}
 
-            {currentSection === 'security-privacy' && (
-                <section className="security-privacy">
-                    <h2>Security and Privacy</h2>
-                    <p><strong>Password Reset Options:</strong> Enabled</p>
-                    <p><strong>Two-Factor Authentication:</strong> {profileInfo.twoFactorAuth ? 'Enabled' : 'Disabled'}</p>
-                    <p><strong>Privacy Settings:</strong> {profileInfo.privacySettings}</p>
-                </section>
-            )}
+{currentSection === 'security-privacy' && (
+    <section className="security-privacy">
+        <h2>Security and Privacy</h2>
+        <p><strong>Password Reset Options:</strong> Enabled</p>
+        <p><strong>Two-Factor Authentication:</strong> {profileInfo.twoFactorAuth ? 'Enabled' : 'Disabled'}</p>
+        <p><strong>Privacy Settings:</strong> {profileInfo.privacySettings}</p>
+        <p><strong>Devices:</strong> {profileInfo.devices && profileInfo.devices.length > 0 ? profileInfo.devices.join(', ') : 'None'}</p>
+        <p><strong>Login Alerts:</strong> {profileInfo.loginAlerts ? 'Enabled' : 'Disabled'}</p>
+        <p><strong>Ad Preferences:</strong> {profileInfo.adPreferences ? 'Personalized Ads' : 'General Ads'}</p>
+        <p><strong>Data Download Request:</strong> {profileInfo.dataDownloadRequest ? 'Requested' : 'Not Requested'}</p>
+        <p><strong>Third-Party Apps:</strong> {profileInfo.thirdPartyApps && profileInfo.thirdPartyApps.length > 0 ? profileInfo.thirdPartyApps.join(', ') : 'None'}</p>
+    </section>
+)}
 
             {isEditing && (
                 <div className="edit-profile">
@@ -198,12 +216,32 @@ const UserProfile = () => {
                         value={profileInfo.theme}
                         onChange={handleInputChange}
                     />
-                    <button onClick={handleSave}>Save Changes</button>
-                    <button onClick={handleEditToggle}>Cancel</button>
+                    <input
+                        type="checkbox"
+                        name="twoFactorAuth"
+                        checked={profileInfo.twoFactorAuth}
+                        onChange={(e) => setProfileInfo(prev => ({ ...prev, twoFactorAuth: e.target.checked }))}
+                    /> Enable Two-Factor Authentication
+                    <input
+                        type="checkbox"
+                        name="loginAlerts"
+                        checked={profileInfo.loginAlerts}
+                        onChange={(e) => setProfileInfo(prev => ({ ...prev, loginAlerts: e.target.checked }))}
+                    /> Enable Login Alerts
+                    <input
+                        type="checkbox"
+                        name="adPreferences"
+                        checked={profileInfo.adPreferences}
+                        onChange={(e) => setProfileInfo(prev => ({ ...prev, adPreferences: e.target.checked }))}
+                    /> Enable Personalized Ads
+                    <button onClick={handleSave}>Save</button>
                 </div>
             )}
-            <button onClick={handleEditToggle} className='fun-btns'>Edit Profile</button>
-            <button onClick={track}  className='fun-btns'>View Order</button>
+
+            <button className='user-Btns' onClick={handleEditToggle}>
+                {isEditing ? 'Cancel' : 'Edit Profile'}
+            </button>
+            <button onClick={track} className="user-Btns">Track Order</button>
         </div>
     );
 };

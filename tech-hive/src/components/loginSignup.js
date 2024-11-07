@@ -55,7 +55,9 @@ const LoginSignUp = () => {
                 firstName: signupFirstName,
                 lastName: signupLastName,
             });
-            console.log(response.data);
+            const { user } = response.data;
+            localStorage.setItem('user', JSON.stringify(user)); 
+            navigate('/home');
         } catch (error) {
             setErrorMessage(error.response?.data?.message || 'Signup failed');
         } finally {
@@ -199,4 +201,3 @@ const LoginSignUp = () => {
 };
 
 export default LoginSignUp;
-

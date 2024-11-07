@@ -7,6 +7,7 @@ import ShowCart from './components/ShowCart';
 import LoginAdmin from './components/loginforadmin';
 import UserProfile from './components/userProfile';
 import OrderTracking from './components/TrackOrder';
+import ViewCart from './components/viewProduct';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import './App.css';
 
@@ -28,11 +29,12 @@ function App() {
       <Route path="/" element={<LoginSignUp />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/admin" element={<Admin />} />
-      <Route path="/product" element={<ProductPage />} />
+      <Route path="/product/:productId" element={<ProductPage />} />
       <Route path="/cart" element={<ShowCart />} />
       <Route path="/loginAdmin" element={<LoginAdmin />} />
       <Route path='/user' element={<UserProfile />} />
       <Route path='/track' element={<OrderTracking />} />
+      <Route path='/viewcart' element={<ViewCart />} />
     </Routes>
   </Router></PayPalScriptProvider>
     

@@ -51,27 +51,25 @@ const SignUp = async (req, res) => {
             }
     }
 
-    const fetctUser= async  (req, res) =>{
-        const { id } = req.body;
-        try{
-            const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid)) 
-            res.json({ message: "User fetched successfully", user: userDoc.data() });
+    const fetchUser = async (req, res) => {
+        const { uid } = req.body;
+        try {
+            const userDoc = await getDoc(doc(db, 'users', uid));
+            if (userDoc.exists()) {
+                res.json({ message: "User fetched successfully", user: userDoc.data() });
+            } else {
+                res.status(404).json({ message: "User not found" });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(400).json({ message: error.message });
         }
-        catch(error){
-            console.error(error)
-            res.status(400).json({message: error.message}) 
-        }
-    }
-
-          
-
-
-
-
+    };
+    
 
 module.exports = {
     SignUp,
     Login,
     resetPassword,
-    fetctUser
+    fetchUser
 };

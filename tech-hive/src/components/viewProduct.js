@@ -1,43 +1,84 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import css from '../styles/product.css'
+import { Link } from 'react-router-dom';
+import '../styles/cart.css';
 
-const ViewProduct = () => {
-    const { productId } = useParams();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+const ViewCart = () => {
+    const [cartItems, setCartItems] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await axios.get(`https://the-hive-backend.onrender.com/api/getProducts/${productId}`);
-                setProduct(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError('Failed to fetch product details');
-                setLoading(false);
-            }
-        };
+        const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+        setCartItems(savedCart);
 
-        fetchProduct();
-    }, [productId]);
+        const total = savedCart.reduce((sum, item) => sum + item.price, 0);
+        setTotalPrice(total);
+    }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-    if (!product) return <div>Product not found</div>;
+    const handleRemoveItem = (productId) => {
+        const updatedCart = cartItems.filter(item => item.id !== productId);
+        setCartItems(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+
+    const viewProduct = (product) => {
+        setSelectedProduct(product);
+    };
+
+    const closeProductPopup = () => {
+        setSelectedProduct(null);
+    };
 
     return (
-        <div className="view-product-container">
-            <h1>{product.name}</h1>
-            <img src={product.Image} alt={product.name} />
-            <p>Price: ${product.price}</p>
-            <p>Quantity: {product.quantity}</p>
-            <p>Specifications: {product.Specs}</p>
-            <p>Device Type: {product.deviceType}</p>
+        <div className="cart-container">
+            <h1>Your Cart</h1>
+            {cartItems.length === 0 ? (
+                <p>Your cart is empty.</p>
+            ) : (
+                <div>
+                    <div className="cart-items">
+                        {cartItems.map((item) => (
+                            <div key={item.id} className="cart-item">
+                                <img src={item.Image} alt={item.name} className="cart-item-image" />
+                                <div className="cart-item-info">
+                                    <h3>{item.name}</h3>
+                                    <p>Price: ${item.price}</p>
+                                    <p>Quantity: {item.quantity}</p>
+                                    <p>Device Type: {item.deviceType}</p>
+                                    <button onClick={() => handleRemoveItem(item.id)} className="remove-item">
+                                        Remove
+                                    </button>
+                                    <button onClick={() => viewProduct(item)} className="view-details">
+                                        View Product Details
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="cart-summary">
+                        <h2>Total Price: ${totalPrice}</h2>
+                        <button className="checkout-button">Proceed to Checkout</button>
+                    </div>
+                </div>
+            )}
+
+            {selectedProduct && (
+                <div className="product-popup">
+                    <div className="popup-content">
+                        <span className="close-popup" onClick={closeProductPopup}>&times;</span>
+                        <img src={selectedProduct.Image} alt={selectedProduct.name} className="popup-image" />
+                        <h3>{selectedProduct.name}</h3>
+                        <p>Price: ${selectedProduct.price}</p>
+                        <p>Quantity: {selectedProduct.quantity}</p>
+                        <p>Device Type: {selectedProduct.deviceType}</p>
+                        <Link to={`/product/${selectedProduct.id}`} className="go-to-product-page">
+                            Go to Product Page
+                        </Link>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
-export default ViewProduct;
+export default ViewCart;
